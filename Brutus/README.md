@@ -1,5 +1,5 @@
 ## 📝 Informasi Challenge
-* **Nama Challenge**: BruteForce
+* **Nama Challenge**: Brutus
 * **Kesulitan**: very easy
 * **Kategori**: Digital Forensics & Incident Response (DFIR)
 * **Author**: cyberjunkie
