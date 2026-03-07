@@ -31,4 +31,4 @@ MSSP adalah perusahaan pihak ketiga yang disewa perusahaan lain untuk mengelola 
 * **Analisis**:karena file adalah database maka menggunakan export object untuk mendapatkannya.
 * **Bukti Log**:<img width="1360" height="627" alt="image" src="https://github.com/user-attachments/assets/cc8dcbaf-35a5-4ae5-9354-047a7bc6bf2c" />
 * **Materi**: file database adalah file biner. follow HTTP stream dirancang untuk menampilkan teks percakatan seperti kode HTML, JSON atau teks biasa ketika file yang dikirm adalah file biner, gambar, atau dokumen wireshark tidak bisa menampilkannya sehingga perlu pake fitur export objects.
-* **Jawaban**: CVE-2026-24061
+* **Jawaban**: 5312269047781209
