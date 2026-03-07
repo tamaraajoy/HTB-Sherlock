@@ -108,5 +108,35 @@ Tim keamanan kemudian menerima email ancaman dari seseorang yang mengaku sebagai
 **Materi**: bedanya ada yang `user-data?format=json` dan `user-data/user-details.csv` adalah .csv yang di download attacker sedangkan format=json adalah saat attacker nanya ke server di dalam folder user-data ada file apa aja dan dijawab server daftar nama filenya hanya teks kode JSON <br>
 * **Jawaban**: 3
 
+---
+
+### Task 11 & 12 : Username & Password
+**Pertanyaan**: Apa username yang attacker buat baru dan passwordnya?
+
+**Analisis**: filter dengan `http.request.method == "POST" && http contains "users"` buka di packet detailsnya <br>
+**Bukti Log**: <img width="1355" height="530" alt="Screenshot 2026-03-07 132253" src="https://github.com/user-attachments/assets/1350824d-3d55-4d10-bc51-eed3511c8b1a" /> <br>
+* **Jawaban**: jellibean & P@$$word
+
+---
+
+### Task 10 : MITRE tactic id
+**Pertanyaan**: apa MITRE tactic id yang digunakan attacker pada task 11 & 12 ?
+
+**Analisis**: https://attack.mitre.org/tactics/enterprise/ <br>
+**Materi**: attacker membuat akun baru dan passwordnya berarti dia melakukan persistence , pada kategori persistence pada link itu hal utama yang dilakukannya adalah create acoount (T1136) karena membuat akun pada cloud sehingga (.003) <br>
+* **Jawaban**: T1136.003
+
+---
+
 ## 💡 Kesimpulan Investigasi
-Serangan dimulai dengan **Brute Force** terhadap berbagai layanan user. Setelah mendapatkan akses **root**, penyerang melakukan **Persistence** dengan membuat user **cyberjunkie** dan mengunduh toolkit audit/persistensi menggunakan **curl**.
+Berdasarkan analisis forensik terhadap log jaringan yang tersedia, berikut adalah ringkasan kronologi serangan pada infrastruktur Vantage:
+
+Reconnaissance & Initial Access: Penyerang memulai serangan dengan melakukan fuzzing menggunakan alat ffuf@2.1.0 untuk menemukan direktori tersembunyi. Mereka berhasil menemukan subdomain cloud.vantage.tech dan melakukan serangan brute force pada formulir login admin, yang akhirnya berhasil masuk pada percobaan ke-4 (setelah 3 kali gagal).
+
+Credential Theft: Setelah mendapatkan akses ke dashboard admin, penyerang segera mengunduh file konfigurasi openrc yang berisi kredensial akses API jarak jauh untuk lingkungan OpenStack perusahaan.
+
+Discovery & API Interaction: Menggunakan kredensial tersebut, penyerang mulai berinteraksi langsung dengan Keystone API (Identity Service) untuk mendapatkan Project ID (9fb84977ff7c4a0baf0d5dbb57e235c7). Penyerang kemudian memetakan layanan Swift dan menemukan 3 kontainer penyimpanan: images, user-data, dan employee-data.
+
+Data Exfiltration: Penyerang melakukan pencurian data (exfiltration) dengan mengunduh file sensitif user-details.csv dan employee-details.csv. Data yang bocor mencakup informasi pribadi (PII) pelanggan dan karyawan, termasuk nama, email, departemen, dan nomor telepon.
+
+Persistence: Untuk memastikan mereka tetap memiliki akses meskipun password admin diubah, penyerang membuat akun pengguna baru bernama jellibean dengan kata sandi P@$$word dan memberikan hak akses administratif. Aktivitas ini dikategorikan dalam teknik MITRE ATT&CK T1136.003 (Create Account: Cloud Account).
