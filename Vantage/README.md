@@ -72,7 +72,41 @@ Tim keamanan kemudian menerima email ancaman dari seseorang yang mengaku sebagai
 * **Jawaban**: 9fb84977ff7c4a0baf0d5dbb57e235c7
 
 ---
+
+### Task 7: Layanan openstack
+**Pertanyaan**: Layanan OpenStack mana yang menyediakan autentikasi dan otorisasi untuk API OpenStack?
+
+**Materi**: layanan openstack yang memberikan fitur autentikasi dan otorisasi adalah keystone. key stone berfungsi untuk menyimpan daftar semua pengguna, grup, dan project id. ketika penyerang mengrimkan kredensial, keystone memeriksa apakah datanya benar. jika benar keystone akan memberikan token.<br>
+**Jawaban**: keystone
 ---
+
+### Task 8: Endpoint URL
+**Pertanyaan**: apa Endpoint URL dari layanan Swift?
+
+**Analisis**: filter dengan `http contains "project" && http contains "id"`<br>
+**Bukti Log**: <img width="1361" height="664" alt="image" src="https://github.com/user-attachments/assets/4d82f1fe-9a54-4bfb-8193-f60b6b5317d4" /><br>
+**Materi**: Endpoint URL Swift adalah alamat web khusus (API) yang digunakan untuk berinteraksi langsung dengan layanan Object Storage (penyimpanan data) seperti mengunggah, melihat, mencuri file rahasia dari cloud di sistem cloud OpenStack. penyerang tidak lagi menggunakan dashboard web tapi bisa langsung ngirim perintah langsung ke alamat URL ini. <br>
+* **Jawaban**: [9fb84977ff7c4a0baf0d5dbb57e235c7](http://134.209.71.220:8080/v1/AUTH_9fb84977ff7c4a0baf0d5dbb57e235c7)
+
+---
+
+### Task 9 : Containers
+**Pertanyaan**: Berapa containers yang diambil attacker?
+
+**Analisis**: filter dengan `tcp.port == 8080` klik kanan pada salah satu paket follow -> HTTP stream <br>
+**Bukti Log**: user-data <br> <img width="910" height="619" alt="Screenshot 2026-03-07 123051" src="https://github.com/user-attachments/assets/1a06bd4a-005a-481c-af63-6e6cc56c8f61" /> <br> employee-data <br> <img width="908" height="626" alt="image" src="https://github.com/user-attachments/assets/32d5ecce-f159-4362-93af-4b809e3abcc7" /> <br> json <img width="984" height="624" alt="Screenshot 2026-03-07 125854" src="https://github.com/user-attachments/assets/4286cf32-fcc3-41cb-bf19-cddf1761fece" /> <br>
+**Materi**: container adalah folder tingkat pertama yang digunakan untuk mengelompokkan file-file digital. containter biasanya hanya satu tingkat saja tidak seperti folder di komputer yang bisa subfolder berlapis-lapis. <br>
+* **Jawaban**: 3
+
+---
+
+### Task 10 : Download user-data
+**Pertanyaan**: Kapan attacker download user-data?
+
+**Analisis**: filter dengan `http.request.method == "GET" && tcp.port == 8080` klik kanan pada salah satu paket follow -> HTTP stream <br>
+**Bukti Log**: <img width="1363" height="623" alt="image" src="https://github.com/user-attachments/assets/977d4df8-a616-4d5f-9192-76175b508382" /> <br>
+**Materi**: bedanya ada yang `user-data?format=json` dan `user-data/user-details.csv` adalah .csv yang di download attacker sedangkan format=json adalah saat attacker nanya ke server di dalam folder user-data ada file apa aja dan dijawab server daftar nama filenya hanya teks kode JSON <br>
+* **Jawaban**: 3
 
 ## 💡 Kesimpulan Investigasi
 Serangan dimulai dengan **Brute Force** terhadap berbagai layanan user. Setelah mendapatkan akses **root**, penyerang melakukan **Persistence** dengan membuat user **cyberjunkie** dan mengunduh toolkit audit/persistensi menggunakan **curl**.
