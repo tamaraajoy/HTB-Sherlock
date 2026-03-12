@@ -57,20 +57,42 @@ authenticate : komputer ambil angka acaknya campur dengan "hash" password kita, 
 
 ---
 
-### Task 5: NTLM challenge
+### Task 6: NTLM challenge
 **Pertanyaan**: berapa angka acak pada challenge?
 
 * **Analisis**: menggunakan filter `ntlmssp` cari NTLMSSP_AUTH
 * **Bukti Log**: <img width="1364" height="722" alt="image" src="https://github.com/user-attachments/assets/08e21e2f-5071-4081-bd95-68a3a90ed071" />
-* **Materi**: karena challenge artinya nyari angka acaknya maka cari info paket yang NTLM AUTH lalu cek di packet details angka tersebut.
+* **Materi**: karena challenge artinya nyari angka acaknya maka cari info paket yang NTLM challenge lalu cek di packet details angka tersebut.
 * **Jawaban**: 601019d191f054f1
 
 ---
 
-### Task 6: 
-**Pertanyaan**: 
+### Task 7: NTProofStr
+**Pertanyaan**: cari value NTProofStr
 
-* **Analisis**: 
-* **Bukti Log**: 
-* **Materi**:
-* **Jawaban**: 
+* **Analisis**: menggunakan filter `ntlmssp` cari NTLMSSP_AUTH
+* **Bukti Log**: <img width="1365" height="720" alt="image" src="https://github.com/user-attachments/assets/51071000-53e4-4415-8005-9d5083e32a79" />
+* **Materi**: NTProofStr adalah nilai hasil kombinasi angka acak dengan hash password kita sehingga berada di tahap ketiga yaitu authenticate pada wireshark maka cari di info yang NTLM AUTH
+* **Jawaban**: c0cc803a6d9fb5a9082253a04dbd4cd4
+
+---
+
+### Task 8: recover password
+**Pertanyaan**: cari passwordnya
+
+* **Analisis**: untuk memecahkan passwordnya bisa menggunakan hashcat atau john the ripper. perlu download dulu hashcat/john dan file rockyou.txt nya jika di windows untuk kali linux sudah ada
+* **Bukti Log**: <img width="1358" height="659" alt="image" src="https://github.com/user-attachments/assets/438ce21e-856c-4891-8e26-e5f9acdc8507" />
+* **Materi**: bikin file dulu misal namafile.txt isi dengan format seperti ini "User::Domain:ServerChallenge:NTProofStr:NTLMv2Response(without first 16 bytes)" di terminal ketik -> john --format=netntlmv2 --wordlist=rockyou.txt hashfile.txt
+* **Jawaban**: NotMyPassword0K?
+
+---
+
+### Task 9: recover password
+**Pertanyaan**: cari passwordnya
+
+* **Analisis**: menggunakan filter `smb2`
+* **Bukti Log**: <img width="1365" height="717" alt="image" src="https://github.com/user-attachments/assets/574df4a7-3f02-4a88-bc71-a4c39766cc9a" />
+* **Materi**: SMB (server message block) protokol standar untuk berbagi file, printer, dan komunasi antar komputer dalam satu jaringan sehingga untuk memfilter kita menggunakan smb2. tree connect request yang dari karna korban melakukan pencarian tapi hindari path yang berakhiran IPC$, ADMIN$, C$ karna ini dilakukan otomatis oleh windows bukan manusia
+* **Jawaban**: \\DC01\DC-Confidential
+
+---
