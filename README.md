@@ -8,3 +8,5 @@ Dokumentasi penyelesaian soal pada website HTB Sherlock
 * **Bukti Log**: 
 * **Materi**:
 * **Jawaban**:
+
+https://attack.mitre.org/tactics/enterprise/
